@@ -1,0 +1,421 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Zone | Tu mundo musical</title>
+    <link rel="stylesheet" href="{% static 'music/css/estilos.css' %}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #101018;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            padding: 22px 7%;
+            background: #191923;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            color: #b66cff;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            color: #c47cff;
+        }
+
+        .principal {
+            padding: 65px 7%;
+            background: linear-gradient(120deg, #35204f, #151521);
+        }
+
+        .principal h1 {
+            font-size: clamp(32px, 5vw, 55px);
+            margin-bottom: 12px;
+        }
+
+        .principal p {
+            color: #d0c8dc;
+            font-size: 18px;
+        }
+
+        .contenido {
+            padding: 35px 7%;
+        }
+
+        .contenido h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .rejilla {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 22px;
+        }
+
+        .tarjeta {
+            background: #1d1d29;
+            padding: 15px;
+            border-radius: 14px;
+            transition: transform .2s, background .2s;
+            min-width: 0;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-5px);
+            background: #292538;
+        }
+
+        .tarjeta img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #30263d;
+        }
+
+        .tarjeta h3 {
+            margin: 14px 0 8px;
+            font-size: 19px;
+        }
+
+        .tarjeta p {
+            color: #c3bdce;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .boton {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 8px;
+            background: #a855f7;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .boton:hover {
+            background: #8b35d4;
+        }
+
+        .detalle {
+            padding: 30px 7%;
+            background: #171722;
+            border-top: 1px solid #343041;
+        }
+
+        .volver {
+            color: #d6a5ff;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .albumes {
+            margin-top: 35px;
+        }
+
+        .cancion {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 13px;
+            margin: 12px 0;
+            background: #222230;
+            border-radius: 12px;
+        }
+
+        .cancion img {
+            width: 75px;
+            height: 75px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .info-cancion {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .info-cancion h4 {
+            margin: 0 0 7px;
+        }
+
+        audio {
+            width: 100%;
+            max-width: 360px;
+            margin-top: 8px;
+        }
+
+        .vacio {
+            color: #c3bdce;
+            padding: 15px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #191923;
+            color: #aaa;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px;
+            }
+
+            .principal, .contenido, .detalle {
+                padding: 28px 20px;
+            }
+
+            .cancion {
+                align-items: flex-start;
+            }
+
+            .cancion img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">♫ MUSIC ZONE</div>
+
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#cantantes">Cantantes</a>
+        <a href="#generos">Géneros</a>
+    </nav>
+</header>
+
+<section class="principal" id="inicio">
+    <h1>Tu música, tu mundo 🎧</h1>
+    <p>Descubre artistas, explora álbumes y escucha tus canciones favoritas.</p>
+    <a class="boton" href="#cantantes">Explorar cantantes</a>
+</section>
+
+<!-- APARTADO DE CANTANTES -->
+<section class="contenido" id="cantantes">
+    <h2>🎤 Nuestros cantantes</h2>
+
+    <div class="rejilla">
+        {% for artista in artistas %}
+            <article class="tarjeta">
+                {% if artista.foto_url %}
+                    <img src="{{ artista.foto_url }}"
+                         alt="{{ artista.nombre }}">
+                {% else %}
+                    <img src="https://placehold.co/400x400/30263d/ffffff?text=Artista"
+                         alt="Foto no disponible">
+                {% endif %}
+
+                <h3>{{ artista.nombre }}</h3>
+
+                <p>
+                    {{ artista.biografia|default:"Descubre su música y sus álbumes."|truncatewords:18 }}
+                </p>
+
+                <a class="boton"
+                   href="#cantante-{{ artista.id }}"
+                   onclick="mostrarCantante('{{ artista.id }}'); return false;">
+                    Ver álbumes
+                </a>
+            </article>
+        {% empty %}
+            <p class="vacio">Todavía no hay cantantes registrados.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- DETALLE DE CADA CANTANTE Y SUS ALBUMES -->
+{% for artista in artistas %}
+<section class="detalle" id="cantante-{{ artista.id }}" hidden>
+
+    <a class="volver" href="#cantantes"
+       onclick="ocultarDetalles(); return true;">
+        ← Volver a cantantes
+    </a>
+
+    <h2>🎤 {{ artista.nombre }}</h2>
+    <p>{{ artista.biografia }}</p>
+
+    <h2 class="albumes">💿 Álbumes de {{ artista.nombre }}</h2>
+
+    <div class="rejilla">
+        {% for album in artista.albumes.all %}
+            <article class="tarjeta">
+                {% if album.portada_url %}
+                    <img src="{{ album.portada_url }}"
+                         alt="{{ album.titulo }}">
+                {% else %}
+                    <img src="https://placehold.co/400x400/30263d/ffffff?text=Album"
+                         alt="Portada no disponible">
+                {% endif %}
+
+                <h3>{{ album.titulo }}</h3>
+
+                {% if album.fecha_lanzamiento %}
+                    <p>Lanzamiento: {{ album.fecha_lanzamiento }}</p>
+                {% endif %}
+
+                <button class="boton"
+                        type="button"
+                        onclick="mostrarAlbum('{{ album.id }}')">
+                    Ver canciones
+                </button>
+            </article>
+        {% empty %}
+            <p class="vacio">Este cantante todavía no tiene álbumes registrados.</p>
+        {% endfor %}
+    </div>
+
+    <!-- CANCIONES DE CADA ALBUM -->
+    {% for album in artista.albumes.all %}
+    <div class="detalle-album" id="album-{{ album.id }}" hidden>
+        <h2>🎵 Canciones: {{ album.titulo }}</h2>
+
+        {% for cancion in album.canciones.all %}
+            <div class="cancion">
+
+                {% if cancion.portada_url %}
+                    <img src="{{ cancion.portada_url }}"
+                         alt="{{ cancion.titulo }}">
+                {% elif album.portada_url %}
+                    <img src="{{ album.portada_url }}"
+                         alt="{{ album.titulo }}">
+                {% else %}
+                    <img src="https://placehold.co/10x10/30263d/ffffff?text=♫"
+                         alt="Portada musical">
+                {% endif %}
+
+                <div class="info-cancion">
+                    <h4>{{ cancion.titulo }}</h4>
+                    <p>{{ cancion.artista.nombre }} · {{ cancion.genero.nombre }}</p>
+
+                    {% if cancion.duracion_segundos %}
+                        <p>Duración: {{ cancion.duracion_segundos }} segundos</p>
+                    {% endif %}
+
+                    {% if cancion.archivo_audio %}
+                        <audio controls preload="none">
+                            <source src="{{ cancion.archivo_audio.url }}">
+                            Tu navegador no puede reproducir este audio.
+                        </audio>
+                    {% else %}
+                        <p>Audio todavía no disponible.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p class="vacio">Este álbum todavía no tiene canciones.</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+</section>
+{% endfor %}
+
+<!-- APARTADO DE GENEROS -->
+<section class="contenido" id="generos">
+    <h2>🎼 Explora por género</h2>
+
+    <div class="rejilla">
+        {% for genero in generos %}
+            <article class="tarjeta">
+                <h3>🎵 {{ genero.nombre }}</h3>
+                <p>{{ genero.descripcion|default:"Descubre canciones de este género." }}</p>
+                <p>{{ genero.canciones.count }} canciones registradas</p>
+            </article>
+        {% empty %}
+            <p class="vacio">Todavía no hay géneros registrados.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<footer>
+    <p>♫ Music Zone — Vive la música a tu manera.</p>
+</footer>
+
+<script>
+    function mostrarCantante(id) {
+        ocultarDetalles();
+
+        const seccion = document.getElementById('cantante-' + id);
+
+        if (seccion) {
+            seccion.hidden = false;
+            seccion.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function ocultarDetalles() {
+        document.querySelectorAll('.detalle').forEach(function(seccion) {
+            seccion.hidden = true;
+        });
+
+        document.querySelectorAll('.detalle-album').forEach(function(album) {
+            album.hidden = true;
+        });
+    }
+
+    function mostrarAlbum(id) {
+        const albumSeleccionado = document.getElementById('album-' + id);
+
+        if (!albumSeleccionado) {
+            return;
+        }
+
+        const seccionCantante = albumSeleccionado.closest('.detalle');
+
+        seccionCantante.querySelectorAll('.detalle-album').forEach(function(album) {
+            album.hidden = true;
+        });
+
+        albumSeleccionado.hidden = false;
+        albumSeleccionado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+</script>
+
+</body>
+</html>
